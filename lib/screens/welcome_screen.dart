@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:getflutter/getflutter.dart';
+import 'package:provider/provider.dart';
+
+import '../models/course.dart';
+import '../providers/courseProvider.dart';
 
 class Welcome extends StatelessWidget {
   @override
@@ -8,23 +12,19 @@ class Welcome extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Welcome',
-          style: TextStyle(fontSize: 28, color: Colors.white),
         ),
-        backgroundColor: Colors.blueGrey,
         actions: <Widget>[
-          InkWell(
-            child: Icon(Icons.add),
-            onTap: (){
-              
-            }
-          ),
-          SizedBox(
-            width: 15,
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              //TODO ventana de dialogo para agregar un curso
+              Navigator.pushNamed(context, '/addCourse');
+            },
           )
         ],
       ),
-      backgroundColor: Colors.blueGrey[300],
       drawer: MyDrawer(),
+      drawerScrimColor: Theme.of(context).primaryColorDark,
       body: MyListView(),
     );
   }
@@ -33,27 +33,44 @@ class Welcome extends StatelessWidget {
 class MyListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        GFCard(
-          color: Colors.indigo[100],
-          title: GFListTile(
-            title: Text(
-              'Inteligencia Artificial',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            avatar: Icon(Icons.ac_unit),
-            padding: EdgeInsets.all(5),
-            margin: EdgeInsets.all(2),
-            subTitle: Text('Curso de IA'),
-          ),
-          titlePosition: GFPosition.start,
-          image: Image.network(
-            'https://elbocon.pe/resizer/cHDiKi4eFoBXM_RBFVlCkD9AIQI=/1200x800/smart/arc-anglerfish-arc2-prod-elcomercio.s3.amazonaws.com/public/PDGLLUK4ZJCL3GNZSJZFL3BVGQ.jpg',
-          ),
-          content: Text('No tienes tareas'),
-        )
-      ],
+    final lista = Provider.of<CourseProvider>(context);
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return CourseCard(lista.listCourses[index]);
+      },
+      itemCount: lista.listCourses.length,
+    );
+  }
+}
+
+class CourseCard extends StatelessWidget {
+  Course courseTemp;
+
+  CourseCard(this.courseTemp);
+
+  @override
+  Widget build(BuildContext context) {
+    return GFCard(
+      color: Theme.of(context).textSelectionColor,
+      title: GFListTile(
+        title: Text(
+          courseTemp.name,
+          style:
+              Theme.of(context).textTheme.headline6.apply(fontWeightDelta: 3),
+        ),
+        avatar: Icon(Icons.ac_unit),
+        margin: EdgeInsets.all(MediaQuery.of(context).size.height * 0.002),
+        subTitle: Text(courseTemp.description),
+      ),
+      titlePosition: GFPosition.start,
+      image: Image.network(
+        courseTemp.urlPhoto,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.13,
+        fit: BoxFit.fitWidth,
+      ),
+      content: Text('No tienes tareas',
+          style: Theme.of(context).textTheme.bodyText1),
     );
   }
 }
@@ -64,7 +81,7 @@ class MyDrawer extends StatelessWidget {
     return Container(
         child: ListView(
       children: <Widget>[
-        SizedBox(height: 70),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.1),
         MyCard('Profile', '/profile'),
         MyCard('Settings', '/profile'),
         MyCard('News', '/profile'),
@@ -84,7 +101,10 @@ class MyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.perm_identity),
+      leading: Icon(
+        Icons.perm_identity,
+        color: Theme.of(context).primaryColorLight,
+      ),
       title: Text(title, style: TextStyle(fontSize: 28, color: Colors.white)),
       onTap: () {
         Navigator.pushNamed(context, route);
@@ -92,13 +112,3 @@ class MyCard extends StatelessWidget {
     );
   }
 }
-
-//MyCard(String title,String route) {
-//  return ListTile(
-//    leading: Icon(Icons.perm_identity),
-//    title: Text(title, style: TextStyle(fontSize: 28, color: Colors.white)),
-//    onTap: (){
-//      Navigator.pushNamed(context, route)
-//    },
-//  );
-//}
