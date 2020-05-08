@@ -83,7 +83,7 @@ class MyBottomBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Course Favorite',
+                  'Favorite Course',
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                   ),
@@ -104,13 +104,13 @@ class MyBottomBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Course Favorite',
+                  'Hobby',
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                   ),
                 ),
                 Text(
-                  'IA',
+                  'Estar pndjo',
                   style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.w500,
@@ -220,7 +220,7 @@ class BackProfile extends StatelessWidget {
           width: double.infinity,
           height: hScreen * 0.3,
           child: Image.network(
-            userTemp.user.urlPhoto,
+            userTemp.user.urlPortada,
             fit: BoxFit.fitWidth,
           ),
         ),
