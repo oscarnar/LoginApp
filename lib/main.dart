@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:login_app/providers/courseProvider.dart';
 import 'package:login_app/providers/userProvider.dart';
 import 'package:login_app/routes.dart';
+import 'package:login_app/theme.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -23,12 +24,24 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blueGrey,
-        ),
+        theme: myTheme,
         routes: getRoutes(),
         initialRoute: '/',
       ),
     );
   }
+
+  ThemeData buildThemeData() {
+    return ThemeData(
+        primarySwatch: Colors.indigo,
+        accentColor: Colors.deepOrange,
+        primaryColor: Colors.deepOrangeAccent,
+      );
+  }
 }
+//class builThemeData(){
+//  static ThemeData theme;
+//  
+//  get 
+//  
+//}
