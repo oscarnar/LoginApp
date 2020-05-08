@@ -68,6 +68,7 @@ class _AddCourseFormState extends State<AddCourseForm> {
             SizedBox(height: 20),
             RaisedButton(
               onPressed: () {
+                //TODO Validar y agregar al provider
                 if (_formKey.currentState.validate()) {
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
