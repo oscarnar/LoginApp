@@ -1,9 +1,10 @@
 class Course{
   String name;
   String description;
+  String urlPhoto;
   List<Task> listTask;
 
-  Course(this.name,{this.description});
+  Course(this.name,{this.description,this.urlPhoto});
   void addTask(Task newTask){
     listTask.add(newTask);
   }
