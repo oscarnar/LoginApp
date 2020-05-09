@@ -25,7 +25,11 @@ class ProfileScreen extends StatelessWidget {
         child: Stack(
           alignment: Alignment.topCenter,
           children: <Widget>[
-            BackProfile(hScreen: hScreen, userTemp: userTemp),
+            BackProfile(
+              hScreen: hScreen,
+              wScreen: wScreen,
+              userTemp: userTemp,
+            ),
             SingleChildScrollView(
               child: Column(
                 children: <Widget>[
@@ -37,6 +41,9 @@ class ProfileScreen extends StatelessWidget {
                     userTemp: userTemp,
                     wScreen: wScreen,
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                     width: wScreen * 0.92,
@@ -45,6 +52,9 @@ class ProfileScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Description(userTemp: userTemp),
+                  ),
+                  SizedBox(
+                    height: 5,
                   ),
                 ],
               ),
@@ -191,7 +201,9 @@ class PhotoProfile extends StatelessWidget {
         width: minSize * 0.4,
         decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(userTemp.user.urlPhoto),
+              image: NetworkImage(
+                userTemp.user.urlPhoto,
+              ),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.circular(wScreen * 0.2),
@@ -206,22 +218,36 @@ class BackProfile extends StatelessWidget {
   const BackProfile({
     Key key,
     @required this.hScreen,
+    @required this.wScreen,
     @required this.userTemp,
   }) : super(key: key);
 
   final double hScreen;
+  final double wScreen;
   final UserProvider userTemp;
 
   @override
   Widget build(BuildContext context) {
+    double mSize;
+    if (wScreen > hScreen)
+      mSize = hScreen * 0.55;
+    else
+      mSize = hScreen * 0.33;
     return Column(
       children: <Widget>[
         Container(
-          width: double.infinity,
-          height: hScreen * 0.3,
+          width: wScreen,
+          height: mSize,
           child: Image.network(
             userTemp.user.urlPortada,
-            fit: BoxFit.fitWidth,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, progress) {
+              return progress == null
+                  ? child
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    );
+            },
           ),
         ),
         SizedBox(
@@ -246,6 +272,9 @@ Widget oldPage(BuildContext context) {
             width: wScreen,
             height: hScreen * 0.28,
             fit: BoxFit.fitWidth,
+            loadingBuilder: (context, child, progress) {
+              return progress == null ? child : CircularProgressIndicator();
+            },
           ),
         ),
         Padding(
