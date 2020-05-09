@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         Provider<UserProvider>(
           create: (_) => UserProvider(),
         ),
-        Provider<CourseProvider>(
+        ChangeNotifierProvider<CourseProvider>(
           create: (_) => CourseProvider(),
         )
       ],
@@ -30,18 +30,4 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-
-  ThemeData buildThemeData() {
-    return ThemeData(
-        primarySwatch: Colors.indigo,
-        accentColor: Colors.deepOrange,
-        primaryColor: Colors.deepOrangeAccent,
-      );
-  }
 }
-//class builThemeData(){
-//  static ThemeData theme;
-//  
-//  get 
-//  
-//}
