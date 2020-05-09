@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:login_app/models/course.dart';
+import 'package:login_app/providers/courseProvider.dart';
 import 'package:login_app/widgets/appBar_widget.dart';
+import 'package:provider/provider.dart';
 
 class AddCourseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final wScreen = MediaQuery.of(context).size.width;
-    final hScreen = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: MyAppBar('Add Course').build(context),
       body: Container(
@@ -24,13 +25,13 @@ class AddCourseForm extends StatefulWidget {
 class _AddCourseFormState extends State<AddCourseForm> {
   final _formKey = GlobalKey<FormState>();
 
-  String _courseName;
-  String _courseDescription;
+  String courseName;
+  String courseDescription;
+  String courseURL;
 
   @override
   Widget build(BuildContext context) {
     final wScreen = MediaQuery.of(context).size.width;
-    final hScreen = MediaQuery.of(context).size.height;
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
@@ -44,6 +45,10 @@ class _AddCourseFormState extends State<AddCourseForm> {
                 if (value.isEmpty) {
                   return "Ingrese un nombre";
                 }
+                return null;
+              },
+              onSaved: (String text) {
+                courseName = text.toString();
               },
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
@@ -61,18 +66,26 @@ class _AddCourseFormState extends State<AddCourseForm> {
             ),
             SizedBox(height: 10),
             nameFormField("Description", wScreen, context),
-            MyTextFormFiel("Description", Icons.textsms),
+            textFormCourse("Description", Icons.textsms),
             SizedBox(height: 10),
             nameFormField("URL", wScreen, context),
-            MyTextFormFiel("Photo URL", Icons.photo),
+            textFormCourse("Photo URL", Icons.photo),
             SizedBox(height: 20),
             RaisedButton(
               onPressed: () {
-                //TODO Validar y agregar al provider
                 if (_formKey.currentState.validate()) {
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Procesando...'),
+                    ),
+                  );
+                  _formKey.currentState.save();
+                  print(courseURL);
+                  Provider.of<CourseProvider>(context, listen: false).addCourse(
+                    Course(
+                      courseName.toString(),
+                      description: courseDescription.toString(),
+                      urlPhoto: courseURL.toString(),
                     ),
                   );
                   Navigator.pop(context);
@@ -106,21 +119,9 @@ class _AddCourseFormState extends State<AddCourseForm> {
       ),
     );
   }
-}
 
-class MyTextFormFiel extends StatelessWidget {
-  String hint;
-  IconData icon;
-  MyTextFormFiel(
-    this.hint,
-    this.icon, {
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  TextFormField textFormCourse(String hint, IconData icon) {
     return TextFormField(
-      obscureText: true,
       decoration: InputDecoration(
         hintText: hint,
         enabledBorder: OutlineInputBorder(
@@ -133,6 +134,12 @@ class MyTextFormFiel extends StatelessWidget {
         filled: true,
         prefixIcon: Icon(icon),
       ),
+      onSaved: (String text) {
+        //Debemos anidar cada vez creemos un nuevo campo
+        if (hint == "Description") courseDescription = text.toString();
+        if (hint == "Photo URL") courseURL = text.toString();
+        if (hint == "Name") courseName = text.toString();
+      },
     );
   }
 }
