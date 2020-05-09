@@ -17,7 +17,6 @@ class Welcome extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              //TODO ventana de dialogo para agregar un curso
               Navigator.pushNamed(context, '/addCourse');
             },
           )
@@ -33,18 +32,18 @@ class Welcome extends StatelessWidget {
 class MyListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final lista = Provider.of<CourseProvider>(context);
+    final lista = Provider.of<CourseProvider>(context).listCourses;
     return ListView.builder(
       itemBuilder: (context, index) {
-        return CourseCard(lista.listCourses[index]);
+        return CourseCard(lista[index]);
       },
-      itemCount: lista.listCourses.length,
+      itemCount: lista.length,
     );
   }
 }
 
 class CourseCard extends StatelessWidget {
-  Course courseTemp;
+  final Course courseTemp;
 
   CourseCard(this.courseTemp);
 
@@ -68,9 +67,20 @@ class CourseCard extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.13,
         fit: BoxFit.fitWidth,
+        loadingBuilder: (context, child, progress) {
+          return progress == null
+              ? child
+              : Center(
+                  child: CircularProgressIndicator(),
+                );
+        },
       ),
-      content: Text('No tienes tareas',
-          style: Theme.of(context).textTheme.bodyText1),
+      content: Text(
+        'No tienes tareas',
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
+      elevation: 13,
+      margin: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
     );
   }
 }
@@ -93,8 +103,8 @@ class MyDrawer extends StatelessWidget {
 }
 
 class MyCard extends StatelessWidget {
-  String route;
-  String title;
+  final String route;
+  final String title;
 
   MyCard(this.title, this.route);
 
