@@ -17,7 +17,7 @@ class CourseProvider with ChangeNotifier {
       "Redes y Comunicacion",
       description: "Redes",
       urlPhoto:
-          'https://lh3.googleusercontent.com/proxy/2tA9kzmgX_PUh99dlsu72XY1sa2Z53iHNpbPWLd_VJlGFNk9A04iQlffleFg7vlMrrSIEQNXBzHBRxGgR3v9cLEwJJ0jPUC7yXJ9l2ZAS5OIxX9vrAglBATb5wwQCtdhCsYXk8iw4e4W',
+          'https://www.redeszone.net/app/uploads-redeszone.net/2019/10/portada_Herramientas_-red.png',
     ),
     Course(
       "Investigacion en CS",
